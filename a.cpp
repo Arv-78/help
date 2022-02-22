@@ -6,20 +6,24 @@
 
 using namespace std;
 
-#define ALL(x) 
-#define UNIQUE(c) 
+typedef pair<int, int> ii;
+typedef pair<ii, int> iii;
+
 
 int main(){
-	//gives unique elements in the array
-	int a[] = {1, 2, 2, 2, 3, 3, 2, 2, 1};
-	vector<int> v(a, a + 9);
+	vector <iii> v;
+
+    iii A = make_pair(ii(5, 24), -1982);
+	iii B = make_pair(ii(5, 24), -1980);
+	iii C = make_pair(ii(11, 13), -1983);
+	v.push_back(A);
+	v.push_back(B);
+	v.push_back(C);
+
 	sort(v.begin(), v.end());
-	//unique replaces the first duplicate elemets with unique i.e. {1, 2, 3,...}
-	//unique returns iterator to last element which is not removed
-	int d = (unique(v.begin(), v.end()) - v.begin()); //gives distance between to iterators
-	v.resize(d);//resize to d = 3 elements
-	for(int i = 0; i < d; i++){
-		printf("%d\n", v[i]);
+
+	for(int i = 0; i<v.size(); i++){
+		printf("%d \t %d \t %d \n", v[i].first.first, v[i].first.second, v[i].second);
 	}
 	return 0;
 }
