@@ -11,9 +11,12 @@ typedef pair<ii, int> iii;
 
 
 int main(){
-	int n = 5, L[] = {10, 7, 5, 20, 8}, v = 7;
-	sort(L, L + n);
-
-	printf("%d\n", binary_search(L, L + n, v));
+	int p[10], N = 10;
+	for(int i = 0; i < N; i++) p[i] = i;
+	do{
+		for(int i = 0; i < N; i++) printf("%c ", 'A' + p[i]);
+		printf("\n");
+	} while(next_permutation(p, p + N));
+	
 	return 0;
 }
