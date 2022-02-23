@@ -11,12 +11,18 @@ typedef pair<ii, int> iii;
 
 
 int main(){
-	int p[10], N = 10;
-	for(int i = 0; i < N; i++) p[i] = i;
-	do{
-		for(int i = 0; i < N; i++) printf("%c ", 'A' + p[i]);
+	int s[10], N = 10;
+
+	for(int i = 0; i < N; i++) s[i] = i;
+
+	for(int i = 0; i < (1 << N); i++){
+		for(int j = 0; j < N; j++){
+			if(i & (1 << j)){
+				printf("%d ", s[j]);
+			}
+		}
 		printf("\n");
-	} while(next_permutation(p, p + N));
+	}
 	
 	return 0;
 }
