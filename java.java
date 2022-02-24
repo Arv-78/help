@@ -1,11 +1,21 @@
 import java.math.BigInteger;
+import java.util.Scanner;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 public class java
 {
-    public static void main(String[] args) {
-      String S = "line: a70 and z72 will be replaced,  aa24 and a872 will not";
+    public static void main(String[] args) throws ScriptException {
+     
+      ScriptEngineManager mgr = new ScriptEngineManager();
 
-      System.out.println(S.replaceAll("(^| )+[a-z][0-9][0-9]($| )+", "***"));
+      ScriptEngine engine = mgr.getEngineByName("JavaScript");
+
+      Scanner sc = new Scanner(System.in);
+
+      while(sc.hasNextLine()) System.out.println(engine.eval(sc.nextLine()));
       
     }
 } 
