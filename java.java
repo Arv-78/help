@@ -1,21 +1,27 @@
 import java.math.BigInteger;
 import java.util.Scanner;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
+/**
+ * java
+ */
 
-public class java
-{
-    public static void main(String[] args) throws ScriptException {
-     
-      ScriptEngineManager mgr = new ScriptEngineManager();
+public class java {
 
-      ScriptEngine engine = mgr.getEngineByName("JavaScript");
+  public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
 
-      Scanner sc = new Scanner(System.in);
+    BigInteger a, b;
 
-      while(sc.hasNextLine()) System.out.println(engine.eval(sc.nextLine()));
-      
+    int t;
+    t = sc.nextInt();
+
+    while ((t--) > 0) {
+      a = BigInteger.valueOf(sc.nextInt());
+      b = BigInteger.valueOf(sc.nextInt());
+
+      System.out.println((a.compareTo(b) == 0) ? "=" : ((a.compareTo(b) > 0) ? ">" : "<"));
+
     }
-} 
+
+  }
+}
