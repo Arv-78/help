@@ -11,9 +11,9 @@ class A{
 
 int main(){
 	
-	A a, *d;
-	d = &a;
-	d->fun(5);
+	string s;
+	getline(cin, s);
+	cout<<s;
 	
 	return 0;
 }
