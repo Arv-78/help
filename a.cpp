@@ -16,56 +16,59 @@ int main()
     freopen("output.txt", "w", stdout);
 	#endif
 
-	map<string, map<string, string>> B;
-
-	B["+x"]["+y"] = "+y";
-	B["+x"]["-y"] = "-y";
-	B["+x"]["+z"] = "+z";
-	B["+x"]["-z"] = "-z";
-
-	B["-x"]["+y"] = "-y";
-	B["-x"]["-y"] = "+y";
-	B["-x"]["+z"] = "-z";
-	B["-x"]["-z"] = "+z";
-
-	B["+y"]["+y"] = "-x";
-	B["+y"]["-y"] = "+x";
-	B["+y"]["+z"] = "+y";
-	B["+y"]["-z"] = "+y";
-
-	B["-y"]["+y"] = "+x";
-	B["-y"]["-y"] = "-x";
-	B["-y"]["+z"] = "-y";
-	B["-y"]["-z"] = "-y";
-
-	B["+z"]["+y"] = "+z";
-	B["+z"]["-y"] = "+z";
-	B["+z"]["+z"] = "-x";
-	B["+z"]["-z"] = "+x";
-
-	B["-z"]["+y"] = "-z";
-	B["-z"]["-y"] = "-z";
-	B["-z"]["+z"] = "+x";
-	B["-z"]["-z"] = "-x";
-
-	string DW, D;
-	long L;
-	for( ; ; ){
-		DW = "+x";
-		scanf("%d", &L);
-		if (L == 0) break;
-		for(long i = 1; i < L; i++){
-			cin >> D;
-			if(D != "No"){
-				DW = B[DW][D];
-			}
+	int N;
+	scanf("%d\n", &N);
+	
+	while(N--){
+		string TN;
+		int n = 0;
+		map <string, int> m;
+		while(getline(cin, TN)){
+			if(TN.compare("") == 0)
+				break;
+			m[TN]++;
+			n++;
 		}
-
-		cout << DW << '\n';
-
+		
+		for(map < string, int> :: iterator i = m.begin(); i != m.end(); i++){
+			// cout<<i->first<<' '<<((int)(i->second * 10000))/10000.0 <<'\n';
+			printf("%s %.4f\n", (i->first).c_str(), (i->second*100.0)/n);
+			cout << i->first << " " << fixed << setprecision(4) << i->second*100.0/n << endl;
+		}
+		if(N)
+		printf("\n");
 	}
-	
-	
-
 	return 0;
 }
+// #include <iostream>
+// #include <cstdio>
+// #include <cstring>
+// #include <iomanip>
+// #include <map>
+// using namespace std;
+// int main() {
+// 	#ifndef ONLINE_JUDGE
+//     freopen("input.txt", "r", stdin);
+//     freopen("output.txt", "w", stdout);
+// 	#endif
+// 	int t;
+// 	scanf("%d", &t);
+// 	getchar();
+// 	getchar();
+// 	while(t--) {
+// 		map<string, int> record;
+// 		string tree;
+// 		int n = 0;
+// 		while(getline(cin, tree)) {
+// 			if(tree.compare("") == 0)
+// 				break;
+// 			record[tree]++;
+// 			n++;
+// 		}
+// 		for(map<string, int>::iterator i = record.begin(); i != record.end(); i++)
+// 			cout << i->first << " " << fixed << setprecision(4) << i->second*100.0/n << endl;
+// 		if(t)
+// 			puts("");
+// 	}
+//     return 0;
+// }

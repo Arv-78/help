@@ -2,15 +2,12 @@
 #include <conio.h>
 
 using namespace std;
-class A{
-	public:
-	void fun (int a){
-		cout<<"time"<<a;
-	}
-};
 
 int main(){
-	
+	#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+	#endif
 	string s;
 	getline(cin, s);
 	cout<<s;
