@@ -1,74 +1,37 @@
-/*
-	author : arv
-*/
-
+//uva 10114 loansome car buyer
 #include <bits/stdc++.h>
-
 using namespace std;
 
-typedef pair<int, int> ii;
-typedef pair<ii, int> iii;
+int main(){
 
-int main()
-{
-	#ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
-	#endif
+	int months, nrec;
+	float dPay, loan, drate[101];
 
-	int N;
-	scanf("%d\n", &N);
-	
-	while(N--){
-		string TN;
-		int n = 0;
-		map <string, int> m;
-		while(getline(cin, TN)){
-			if(TN.compare("") == 0)
-				break;
-			m[TN]++;
-			n++;
+	while(1){
+		scanf("%d %f %f %d", &months, &dPay, &loan, &nrec);
+		if(months < 0){
+			break;
 		}
+		int n;
+		float rate;
+		while(nrec--){
+			scanf("%d %f", &n, &rate);
+			for(int i = n; i<101; i++){
+				drate[i] = rate;
+			}
+		}
+		int now = 0;
+		float deploan = (loan + dPay) * (1 - drate[0]);
+		float payment = loan;
+		while(deploan < payment){
+			now++;
+			deploan = deploan * (1 - drate[now]);
+			payment -= loan/months;
+		}
+
+		cout<<now<<(now != 1 ? " months\n" : " month\n");
 		
-		for(map < string, int> :: iterator i = m.begin(); i != m.end(); i++){
-			// cout<<i->first<<' '<<((int)(i->second * 10000))/10000.0 <<'\n';
-			printf("%s %.4f\n", (i->first).c_str(), (i->second*100.0)/n);
-			cout << i->first << " " << fixed << setprecision(4) << i->second*100.0/n << endl;
-		}
-		if(N)
-		printf("\n");
+
 	}
-	return 0;
+
 }
-// #include <iostream>
-// #include <cstdio>
-// #include <cstring>
-// #include <iomanip>
-// #include <map>
-// using namespace std;
-// int main() {
-// 	#ifndef ONLINE_JUDGE
-//     freopen("input.txt", "r", stdin);
-//     freopen("output.txt", "w", stdout);
-// 	#endif
-// 	int t;
-// 	scanf("%d", &t);
-// 	getchar();
-// 	getchar();
-// 	while(t--) {
-// 		map<string, int> record;
-// 		string tree;
-// 		int n = 0;
-// 		while(getline(cin, tree)) {
-// 			if(tree.compare("") == 0)
-// 				break;
-// 			record[tree]++;
-// 			n++;
-// 		}
-// 		for(map<string, int>::iterator i = record.begin(); i != record.end(); i++)
-// 			cout << i->first << " " << fixed << setprecision(4) << i->second*100.0/n << endl;
-// 		if(t)
-// 			puts("");
-// 	}
-//     return 0;
-// }
