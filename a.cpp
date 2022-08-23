@@ -1,37 +1,39 @@
-//uva 10114 loansome car buyer
+/*
+	author: arv
+	UVA 11559 - Event Planning
+*/
 #include <bits/stdc++.h>
 using namespace std;
 
-int main(){
-
-	int months, nrec;
-	float dPay, loan, drate[101];
-
-	while(1){
-		scanf("%d %f %f %d", &months, &dPay, &loan, &nrec);
-		if(months < 0){
-			break;
-		}
-		int n;
-		float rate;
-		while(nrec--){
-			scanf("%d %f", &n, &rate);
-			for(int i = n; i<101; i++){
-				drate[i] = rate;
+int main()
+{
+	#ifndef ONLINE_JUDGE
+		freopen("input.txt", "r", stdin);
+		freopen("output.txt", "w", stdout);
+	#endif
+	
+	int NoP, bud, h, w;
+	while(scanf("%d %d %d %d", &NoP, &bud, &h, &w) != EOF){
+		int fbud = 100000000;
+		int flag;
+		while(h--){
+			int hp, ww = w;
+			flag = 0;
+			scanf("%d", &hp);
+			if((hp*NoP) > bud) flag = 1;
+			while(ww--){
+				int nob;
+				scanf("%d", &nob);
+				if((nob >= NoP) && flag != 1){
+					if(fbud > hp*NoP)fbud = hp * NoP;
+				}
 			}
 		}
-		int now = 0;
-		float deploan = (loan + dPay) * (1 - drate[0]);
-		float payment = loan;
-		while(deploan < payment){
-			now++;
-			deploan = deploan * (1 - drate[now]);
-			payment -= loan/months;
+		if(fbud == 100000000){
+			cout<<"stay home\n";
+		} else {
+			cout<<fbud<<'\n';
 		}
-
-		cout<<now<<(now != 1 ? " months\n" : " month\n");
-		
-
 	}
-
+	return 0;
 }
