@@ -1,10 +1,8 @@
 /*
 	author: arv
-	UVA 11559 - Event Planning
 */
 #include <bits/stdc++.h>
 using namespace std;
-
 int main()
 {
 	#ifndef ONLINE_JUDGE
@@ -12,28 +10,53 @@ int main()
 		freopen("output.txt", "w", stdout);
 	#endif
 	
-	int NoP, bud, h, w;
-	while(scanf("%d %d %d %d", &NoP, &bud, &h, &w) != EOF){
-		int fbud = 100000000;
-		int flag;
-		while(h--){
-			int hp, ww = w;
-			flag = 0;
-			scanf("%d", &hp);
-			if((hp*NoP) > bud) flag = 1;
-			while(ww--){
-				int nob;
-				scanf("%d", &nob);
-				if((nob >= NoP) && flag != 1){
-					if(fbud > hp*NoP)fbud = hp * NoP;
+	int t,count = 1;
+	while(scanf("%d", &t) != EOF){
+		if(count != 1)cout<<'\n';
+		count++;
+		int nop = t;
+		char names [t + 1][13];
+		for(int i = 0; i < nop; i++){
+			scanf("%s", names[i]);
+		}
+
+		int money[t + 1] = {0};
+		int left[t + 1] = {0};
+
+		while(t--){
+			char giver[100];
+			int m, N;
+			scanf("%s", giver);
+			scanf("%d %d", &m, &N);
+			int each = 0; int leftm = 0;
+			if(N != 0){
+				each = m / N;
+				leftm = m % N;
+			} else {
+				leftm = m;
+			}
+
+			for(int i = 0; i < nop; i++){
+				if(strcmp(giver, names[i]) == 0){
+					money[i] = m;
+					left[i] += leftm;
+				}
+			}
+
+			while(N --){
+				char taker[13];
+				scanf("%s", taker);
+				for(int i = 0; i < nop; i++){
+					if(strcmp(taker, names[i]) == 0){
+						left[i] += each;
+					}
 				}
 			}
 		}
-		if(fbud == 100000000){
-			cout<<"stay home\n";
-		} else {
-			cout<<fbud<<'\n';
-		}
+		for (int i = 0; i < nop; i++){
+				printf("%s %d\n", names[i], (left[i] - money[i]));
+		}		
 	}
+
 	return 0;
 }
