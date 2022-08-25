@@ -10,53 +10,47 @@ int main()
 		freopen("output.txt", "w", stdout);
 	#endif
 	
-	int t,count = 1;
-	while(scanf("%d", &t) != EOF){
-		if(count != 1)cout<<'\n';
-		count++;
-		int nop = t;
-		char names [t + 1][13];
-		for(int i = 0; i < nop; i++){
-			scanf("%s", names[i]);
-		}
-
-		int money[t + 1] = {0};
-		int left[t + 1] = {0};
-
+	int t;
+	while(scanf("%d", &t), t){
+		int dir = 0;
+		t--;
 		while(t--){
-			char giver[100];
-			int m, N;
-			scanf("%s", giver);
-			scanf("%d %d", &m, &N);
-			int each = 0; int leftm = 0;
-			if(N != 0){
-				each = m / N;
-				leftm = m % N;
-			} else {
-				leftm = m;
+			string s;
+			cin>>s;
+			//x+ 0 x- 1 y+ 2 y- 3 z+ 4 z- 5
+			if(s == "No")continue;
+			if(s == "+y"){
+				if(dir == 0) dir = 2;
+				else if(dir == 1) dir = 3;
+				else if(dir == 2) dir = 1;
+				else if(dir == 3) dir = 0;
 			}
-
-			for(int i = 0; i < nop; i++){
-				if(strcmp(giver, names[i]) == 0){
-					money[i] = m;
-					left[i] += leftm;
-				}
+			if(s == "-y"){
+				if(dir == 0) dir = 3;
+				else if(dir == 1) dir = 2;
+				else if(dir == 2) dir = 0;
+				else if(dir == 3) dir = 1;
 			}
-
-			while(N --){
-				char taker[13];
-				scanf("%s", taker);
-				for(int i = 0; i < nop; i++){
-					if(strcmp(taker, names[i]) == 0){
-						left[i] += each;
-					}
-				}
+			if(s == "+z"){
+				if(dir == 0) dir = 4;
+				else if(dir == 1) dir = 5;
+				else if(dir == 4) dir = 1;
+				else if(dir == 5) dir = 0;
+			}
+			if(s == "-z"){
+				if(dir == 0) dir = 5;
+				else if(dir == 1) dir = 4;
+				else if(dir == 4) dir = 0;
+				else if(dir == 5) dir = 1;
 			}
 		}
-		for (int i = 0; i < nop; i++){
-				printf("%s %d\n", names[i], (left[i] - money[i]));
-		}		
+		if(dir == 0) cout<<"+x\n";
+		if(dir == 1) cout<<"-x\n";
+		if(dir == 2) cout<<"+y\n";
+		if(dir == 3) cout<<"-y\n";
+		if(dir == 4) cout<<"+z\n";
+		if(dir == 5) cout<<"-z\n";
 	}
-
+	
 	return 0;
 }
