@@ -1,42 +1,78 @@
-#include <stdio.h>
-
-int main() {
+/*
+	author: arv
+*/
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
 	#ifndef ONLINE_JUDGE
 		freopen("input.txt", "r", stdin);
 		freopen("output.txt", "w", stdout);
 	#endif
-    char s[100];
-    while(gets(s)) {
-        int a = 0, b = 0, i;
-        for(i = 0; s[i]; i++) {
-            if(s[i] >= 'a' && s[i] <= 'z')
-                a += s[i]-'a'+1;
-            if(s[i] >= 'A' && s[i] <= 'Z')
-                a += s[i]-'A'+1;
-        }
-        while(a >= 10) {
-            int tmp = 0;
-            while(a > 0)
-                tmp += a%10, a /= 10;
-            a = tmp;
-        }
-        for(gets(s), i = 0; s[i]; i++) {
-            if(s[i] >= 'a' && s[i] <= 'z')
-                b += s[i]-'a'+1;
-            if(s[i] >= 'A' && s[i] <= 'Z')
-                b += s[i]-'A'+1;
-        }
-        while(b >= 10) {
-            int tmp = 0;
-            while(b > 0)
-                tmp += b%10, b /= 10;
-            b = tmp;
-        }
-        if(a > b){
-            int tmp;
-            tmp = a, a = b, b = tmp;
-        }
-        printf("%.2lf %%\n", (double)a*100/b);
-    }
-    return 0;
+	int a;
+	while(scanf("%d", &a), (a != 0)){
+		string s;
+		cin>>s;
+		int dis = a;
+		int dd = -a, rd = -a;
+		for(int i = 1; i <= a; i++){
+			if(s[i - 1] == 'Z'){
+				dis = 0;
+				break;
+			}
+			if(s[i - 1] == 'D'){
+				dis = min(dis, i - rd);
+				dd = i;
+			}
+			if(s[i - 1] == 'R'){
+				dis = min(dis, i - dd);
+				rd = i;
+			}
+			// if(dd && rd){
+			// 	if(dd > rd){
+			// 		dis = min(dis, dd - rd);
+			// 	} else {
+			// 		dis = min(dis, rd - dd);
+			// 	}
+			// }
+
+		}
+		cout<<dis<<'\n';
+
+
+		//gets wrong answer
+		// char c;
+		// int flag = 0;
+		// int i = 0, dis = 20000000;
+		// for(i = 0; i < a; i++){
+		// 	if(s[i] != '.'){ 
+		// 		c = s[i];
+		// 		if(c == 'Z')flag = 1;
+		// 		i++;
+		// 		break;
+		// 	}
+		// }
+		// while(i < a){ 
+		// 	int count = 0;
+		// 	if(c == 'Z'){
+		// 		flag = 1;
+		// 		break;
+		// 	}
+		// 	while(s[i] == '.' && i < a){
+		// 		count++;
+		// 		i++;
+		// 	}
+		// 	count++;
+		// 	if(s[i] != c && i < a){
+		// 		dis = min(dis, count);
+		// 		c = s[i];
+		// 	}
+		// 	i++;
+		// }
+
+		// cout<<(flag == 1 ? 0 : dis)<<'\n';
+
+	}
+	
+	return 0;
 }
