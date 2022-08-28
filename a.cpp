@@ -1,47 +1,42 @@
-/*
-	author: arv
-	UVa 11683 - Laser Sculpture
-*/
 #include <bits/stdc++.h>
 using namespace std;
-int main()
-{
-	#ifndef ONLINE_JUDGE
+
+//UVa 11956 - Brainfuck
+
+int main(){
+
+    #ifndef ONLINE_JUDGE
 		freopen("input.txt", "r", stdin);
 		freopen("output.txt", "w", stdout);
 	#endif
-	
-	int h, l;
-	while(scanf("%d %d", &h, &l), h){
-		bool sculpted[h] = {false};
-		int prev = -1;
-		int count = 0;
-		int x;
-		while(l --){
-			cin>>x;
-			if(x < h && x >= prev){
-				for(int i = x; i < h; i++){
-					if(sculpted[i] != true){
-						sculpted[i] = true;
-						count++;
-					}
-				}
-			}
-			if(x < prev){
-				count = count + prev - x;
-				for(int i = 0; i < h; i++){
-					if(i >= x){
-						sculpted[i] = true;
-					}else{
-						sculpted[i] = false;
-					}
-				}
-			}
-			prev = x;
-			
-		}
-		cout<<count<<'\n';
-	}
-	
-	return 0;
+
+    int t, cs = 0;
+    scanf("%d", &t);
+    while(t--){
+        char str[1000005];
+        //getline(cin, str); //scanf not working
+        //getchar(); //solution look below line
+        scanf(" %s", &str);//their is a leading zero
+        int idx = 0;
+        //unsigned char mem[100] = {}; //why range 0 to 255
+        int mem[100] = {0};
+        for(int i = 0; str[i]; i++){
+            switch (str[i]){
+                case '>': idx++;break;
+                case '<': idx--;break;
+                case '+': mem[idx]++;if(mem[idx] > 255) mem[idx] = 0; break; 
+                case '-': mem[idx]--;if(mem[idx] < 0) mem[idx] = 255; break; 
+            }
+            if(idx > 99) idx = 0;
+            if(idx < 0) idx = 99;
+        }
+
+        printf("Case %d:", ++cs);
+        for(auto i : mem)
+            printf(" %02X", i);
+        puts("");
+    }
+    
+    
+    return 0;
 }

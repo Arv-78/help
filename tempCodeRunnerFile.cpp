@@ -1,4 +1,3 @@
-#ifndef ONLINE_JUDGE
-		freopen("input.txt", "r", stdin);
-		freopen("output.txt", "w", stdout);
-	#endif
+for(auto ch : mem)
+        //     printf(" %02X", ch);
+        // printf("\n");
