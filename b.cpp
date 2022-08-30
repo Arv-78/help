@@ -1,122 +1,70 @@
-/*
-	author: arv
-*/
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
 using namespace std;
+        
 int main()
 {
-	#ifndef ONLINE_JUDGE
-		freopen("input.txt", "r", stdin);
-		freopen("output.txt", "w", stdout);
-	#endif
-
-    std::map<char, int> suitConversion;
-    suitConversion['S'] = 0;
-    suitConversion['H'] = 1;
-    suitConversion['D'] = 2;
-    suitConversion['C'] = 3;
+    #ifndef ONLINE_JUDGE
+        freopen("input.txt", "r", stdin);
+        freopen("output.txt", "w", stdout);
+    #endif
+    vector<int> her(3), his(2);
+    vector<bool> available;
     
-    char back[4] = {'S', 'H', 'D', 'C'};
+    int card;
     
-    // Is ordered 'S', 'H', 'D', 'C'
-    bool ace[4], king[4], queen[4], jack[4], trump[4];
-    int count[4], points, specialPoints, pos;
-    
-    char temp[3];
-    
-    
-    while (scanf("%s", temp) == 1)
+    while (cin >> her[0] >> her[1] >> her[2] >> his[0] >> his[1], her[0])
     {
-        for (int i = 0; i < 4; ++i)
+        available.clear();
+        available.resize(53, true);
+        
+        for (int i = 0; i < 3; ++i)
         {
-            ace[i] = king[i] = queen[i] = jack[i] = trump[i] = false;
-            count[i] = 0;
+            available[her[i]] = false;
+            
+            if (i < 2)
+                available[his[i]] = false;
         }
         
-        points = specialPoints = 0; 
-            
-        for (int i = 0; i < 13; ++i)
+        sort(her.begin(), her.end());
+        sort(his.begin(), his.end());
+        
+        card = 53;
+        
+        // Both are higher
+        if (his[0] > her[2])
         {
-            if (i != 0)
-                scanf("%s", temp);
-            
-            pos = suitConversion[temp[1]];
-            
-            switch (temp[0])
+            for (int i = 1; i <= 52 && i < card; ++i)
+                if (available[i])
+                    card = i;
+        }
+        
+        // One is higher than all
+        if (his[1] > her[2])
+        {
+            //printf("Here %d\n", her[2]);
+            for (int i = her[2] + 1; i <= 52 && i < card; ++i)
             {
-            case 'A':
-                ace[pos] = true;
-                points += 4;
-                break;
                 
-            case 'K':
-                king[pos] = true;
-                points += 3;
-                break;
-                
-            case 'Q':
-                queen[pos] = true;
-                points += 2;
-                break;
-                
-            case 'J':
-                jack[pos] = true;
-                points += 1;
+                if (available[i])
+                    card = i;
             }
-            
-            ++count[pos];
         }
         
-        // Subtractions
-        for (int i = 0; i < 4; ++i)
+        // Both higher than two of her cards
+        if (his[0] > her[1])
         {
-            if (ace[i])
-                trump[i] = true;
-                
-            if (king[i] && count[i] < 2)
-                --points;
-                
-            else if (king[i])
-                trump[i] = true;
-                
-            if (queen [i] && count[i] < 3)
-                --points;
-            
-            else if (queen[i])
-                trump[i] = true;
-                
-            if (jack[i] && count[i] < 4)
-                --points;
-            
-            if (count[i] == 2)
-                ++specialPoints;
-            
-            else if (count[i] < 2)
-                specialPoints += 2;
+             for (int i = her[1] + 1; i <= 52 && i < card; ++i)
+                if (available[i])
+                    card = i;
         }
         
-        if (trump[0] && trump[1] && trump[2] && trump[3] && points >= 16)
-            printf("BID NO-TRUMP\n");
-            
-        else if (points + specialPoints >= 14)
-        {
-            char output = 'S';
-            int max = 0;
-            for (int i = 1; i < 4; ++i)
-            {
-                if (count[i] > count[max])
-                {
-                    max = i;
-                    output = back[i];
-                }
-                
-                
-            }
-            printf("BID %c\n", output);
-        }
-        else
-            printf("PASS\n");
+        if (card == 53)
+            card = -1;
+           
+        cout << card << '\n';
     }
-    
-    
+
 }
