@@ -1,7 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-
+#include <bits/stdc++.h>
 using namespace std;
         
 int main()
@@ -10,61 +7,38 @@ int main()
         freopen("input.txt", "r", stdin);
         freopen("output.txt", "w", stdout);
     #endif
-    vector<int> her(3), his(2);
-    vector<bool> available;
     
-    int card;
-    
-    while (cin >> her[0] >> her[1] >> her[2] >> his[0] >> his[1], her[0])
-    {
-        available.clear();
-        available.resize(53, true);
-        
-        for (int i = 0; i < 3; ++i)
-        {
-            available[her[i]] = false;
-            
-            if (i < 2)
-                available[his[i]] = false;
+	int n,m;
+    int a,b,c;
+    while(scanf("%d %d",&n,&m),n||m){
+        int res = 0;
+        vector<int> ppl = {0,1,2,3,4,5,6,7};
+        vector<int> seat = {0,1,2,3,4,5,6,7};
+        vector<tuple<int,int,int>> constraints;
+        for(int i=0;i<m;i++){
+            cin >> a >> b >> c;
+            constraints.push_back(make_tuple(a,b,c));
         }
-        
-        sort(her.begin(), her.end());
-        sort(his.begin(), his.end());
-        
-        card = 53;
-        
-        // Both are higher
-        if (his[0] > her[2])
-        {
-            for (int i = 1; i <= 52 && i < card; ++i)
-                if (available[i])
-                    card = i;
-        }
-        
-        // One is higher than all
-        if (his[1] > her[2])
-        {
-            //printf("Here %d\n", her[2]);
-            for (int i = her[2] + 1; i <= 52 && i < card; ++i)
-            {
-                
-                if (available[i])
-                    card = i;
+        do{
+            for(int i=0;i<n;i++) seat[ppl[i]] = i;
+            bool satisfy = true;
+            // check each constraint
+            for(int i=0;i<constraints.size() && satisfy;i++){
+                auto& tup = constraints[i];
+                int p1 = get<0>(tup), p2 = get<1>(tup), req = get<2>(tup);
+                int dist = abs(seat[p1] - seat[p2]);
+                if(req < 0){
+                    // must be req length apart
+                    satisfy = dist >= abs(req);
+                } else {
+                    // must be within req
+                    satisfy = dist <= req;
+                }
             }
-        }
-        
-        // Both higher than two of her cards
-        if (his[0] > her[1])
-        {
-             for (int i = her[1] + 1; i <= 52 && i < card; ++i)
-                if (available[i])
-                    card = i;
-        }
-        
-        if (card == 53)
-            card = -1;
-           
-        cout << card << '\n';
+            if(satisfy) res++;
+        }while(next_permutation(ppl.begin(),ppl.begin()+n));
+        cout << res << endl;
     }
 
+    return 0;
 }
