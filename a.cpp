@@ -4,20 +4,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-char board[15][15];
-int ans, n;
-bitset <30> rw, rd, ld;
-void backtrack(int c){
-    if(c == n) {ans++;}
-
-    for(int r = 0; r < n; r++){
-        if(board[r][c] != '*' && !rw[r] && !rd[r + c] && !ld[r - c + n - 1]){
-            rw[r] = rd[r + c] = ld[r - c + n - 1] = true;
-            backtrack(c + 1);
-            rw[r] = rd[r + c] = ld[r - c + n - 1] = false;
-        }
-    }
-}
+int sc;
+int killed[1025][1025];
 
 int main()
 {
@@ -25,17 +13,37 @@ int main()
         freopen("input.txt", "r", stdin);
         freopen("output.txt", "w", stdout);
     #endif
-
-    int tcn = 0;
-    while(scanf("%d", &n), n){
-        for(int r = 0; r < n; r++)
-            for(int c = 0; c < n; c++){
-                char ch; cin>>ch; board[r][c] = ch;
+    
+    scanf("%d", &sc);
+    while(sc--){
+        int d, n;
+        int x, y, sz;
+        scanf("%d %d", &d, &n);
+        memset(killed, 0, sizeof(killed));
+        while(n--){
+            scanf("%d %d %d", &x, &y, &sz);
+            int xl = max(0, x - d); int xr = min(1024, x + d);
+            int yb = max(0, y - d); int yu = min(1024, y + d);
+            for(int i = xl; i <= xr; i++){
+                for(int j = yb; j <= yu; j++){
+                    killed[i][j] += sz;
+                }
             }
+        }
 
-        ans = 0;
-        backtrack(0);
-        printf("Case %d: %d\n", ++tcn, ans);                
+        int kill = -1;
+        int chosen_x = 0;
+        int chosen_y = 0;
+        for(int j = 0; j < 1025; j++){
+            for(int i = 0; i < 1025; i++){
+                if(killed[j][i] > kill){
+                    kill = killed[j][i];
+                    chosen_x = j;
+                    chosen_y = i;
+                }
+            }
+        }
+        printf("%d %d %d\n", chosen_x, chosen_y, kill);
     }
     return 0;
 }
