@@ -5,6 +5,7 @@
         "random": "cpp",
         "ostream": "cpp",
         "limits": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "cmath": "cpp"
     }
 }
