@@ -1,2 +1,3 @@
- = j;
-                    // chosen_y = i;
+double, double> d : v){
+//             cout<<d.first<<' '<<d.second<<'\n';
+//         }
