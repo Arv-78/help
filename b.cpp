@@ -1,60 +1,60 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <cmath>
+/*
+    author: arv
+*/
+#include <bits/stdc++.h>
 using namespace std;
 
-bool cmp1(pair<double, double> d1, pair<double, double> d2){
-    return (d1.first < d2.first);
-}
 
 int main()
-{  
+{
     #ifndef ONLINE_JUDGE
         freopen("input.txt", "r", stdin);
         freopen("output.txt", "w", stdout);
     #endif
-
-
-    int n, l, w;
-    while (cin >> n >> l >> w)
-    {
-        vector<pair<double, double>> circles(10);//check
-        for (int i = 0; i < n; ++i)
-        {
-            double pos, radius;
-            cin >> pos >> radius;
-            // Calculate this circle's effective interval [L, R].
-            // Then this problem is identical to 10020 - Minimal coverage.
-            double range = sqrt(radius * radius - (w / 2.0) * (w / 2.0));
-
-            circles[i] = make_pair(pos - range, pos + range);
-        }
-
-        // Sort the circles by increasing left endpoint. 
-        sort(circles.begin(), circles.end());
-
-        for(pair<double, double> d : circles){
-            cout<<d.first<<' '<<d.second<<'\n';
-        }
-
-        double last = 0.0, far = 0.0, curl, curr;
-        int ct = 0;
-        if(n)
-        for(int i = 0; i <= circles.size(); i++){
-            if(l == 0){break;}
-            if(far >= l){ ct++; break;}
-            if(circles[i].first <= last)far = max(far, circles[i].second);
-            if(circles[i].first > last){
-                last = far;
-                if(circles[i].first > last){ct = -1; break;}
-                ct++;
-                i--;
+    
+    int price[25][25];
+    bool reachable[3][210];
+    int M, C;
+    int TC, score;
+    scanf("%d", &TC);
+    while(TC --){
+        scanf("%d %d", &M, &C);
+        for(int i = 0; i < C; i++){
+            scanf("%d", &price[i][0]);//k
+            for(int j = 1; j <= price[i][0]; j++){
+                scanf("%d", &price[i][j]);
             }
         }
-        if(far < l && l)cout<<-1<<'\n';
-        else cout<<ct<<'\n';
+    
+        memset(reachable, false, sizeof reachable);
+        //filling base cases
+        for(int i = 1; i <= price[0][0]; i++){
+            if(M - price[0][i] >= 0) reachable[0][M - price[0][i]] = true;
+        }
+
+        //filling dp table bottom up approch
+        int curr = 1, prev = 0;
+        for(int g = 1; g < C; g++){
+            for(int i = 0; i < 210; i++)reachable[curr][i] = 0;
+            for(int money = 0; money < M; money++){
+                if(reachable[prev][money]){
+                    for(int k = 1; k <= price[g][0]; k++){
+                        if(money - price[g][k] >= 0){
+                            reachable[curr][money - price[g][k]] = true;
+                        }
+                    }
+                }
+            }
+            swap(curr, prev);
+        }
+        int money;
+        for(money = 0; money < M && !reachable[prev][money]; money++);
+
+        if(money == M) printf("no solution\n");
+        else printf("%d\n", M - money);
         
     }
+
+
     return 0;
 }
