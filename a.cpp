@@ -3,67 +3,36 @@
 */
 #include <bits/stdc++.h>
 using namespace std;
+
+int A[] = {-7, 10, 9, 2, 3, 8, 8, 1};
+//finding LIS for state LIS(i)
+int LIS(int i){
+
+    if(i == 0) return 1;
+    int tp = -10000000;
+    for(int j = 0; j < i; j++){
+        if(A[j] < A[i]){
+            tp = max(tp, LIS(j) + 1);
+        }
+    }
+    return tp;
+}
+
 int main()
 {
-    #ifndef ONLINE_JUDGE
-        freopen("input.txt", "r", stdin);
-        freopen("output.txt", "w", stdout);
-    #endif
-    
-    // int A[4][4] = {{0, -2, -7, 0},
-    //                {9, 2, -6, 2},
-    //                {-4, 1, -4, 1},
-    //                {-1, 8, 0, -2}};
-
-    // int maxSum = -127 * 100 * 100;
-    // int n = 4;
-    // //first coordinates
-    // for(int i = 0; i < 4; i++)
-    //     for(int j = 0; j < 4; j++)
-    //         //last coordinates
-    //         for(int k = i; k < n; k++){
-    //             for(int l = j; l < n; l++){
-    //                 int sum = 0;
-    //                 for(int a = i; a <= k; a++)
-    //                     for(int b = j; b < l; b++)
-    //                         sum += A[a][b];
-    //                 maxSum = max(maxSum, sum);
-    //             }
-    //         }
-
-    // printf("%d", maxSum);
-
-    int n = 4;
-    int A[4][4];
-
-    //cumulative sum array
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
-            scanf("%d", &A[i][j]);
-            if(i > 0) A[i][j] += A[i - 1][j];
-            if(j > 0) A[i][j] += A[i][j - 1];
-            if(i > 0 && j > 0) A[i][j] -= A[i - 1][j - 1];
+    int max = 0; int idx = 0, tp;
+    //finding LIS for each i and find max LIS id
+    for(int i = 0; i <= 7; i++){
+        tp = LIS(i);
+        if(tp > max){
+            max = tp;
+            idx = i;
         }
     }
-
-    int maxSum = -127 * 100 * 100;
-    // finding largest sum for each (i, j) to (k, l)
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
-            for(int k = i; k < n; k++){
-                for(int l = j; l < n; l++){
-                    int sum = A[k][l];
-                    if(i > 0) sum -= A[i - 1][l];
-                    if(j > 0) sum -= A[k][j - 1];
-                    if(i > 0 && j > 0) sum += A[i - 1][j - 1];
-
-                    maxSum = max(maxSum, sum);
-                }
-            }
-        }
+    //print LIS
+    for(int i = 0; i <= idx; i++){
+        if(A[i] <= A[idx]) printf("%d ", A[i]);
     }
-
-    printf("%d\n", maxSum);
 
     return 0;
 }
