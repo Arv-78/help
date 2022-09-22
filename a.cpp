@@ -4,35 +4,34 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int A[] = {-7, 10, 9, 2, 3, 8, 8, 1};
-//finding LIS for state LIS(i)
-int LIS(int i){
+int v[] = {100, 70, 50, 10};
+int w[] = {10, 4, 6, 12};
+int n = 4;
+int val(int id, int remW){
 
-    if(i == 0) return 1;
-    int tp = -10000000;
-    for(int j = 0; j < i; j++){
-        if(A[j] < A[i]){
-            tp = max(tp, LIS(j) + 1);
-        }
-    }
-    return tp;
+    if(id == n) return 0;
+
+    if(remW == 0) return 0;
+
+    if(w[id] > remW) //if weight is more than remW ignore 
+        return val(id + 1, remW);
+
+    //take or ignore value
+    //val(id, remW) = max(val(id + 1, remW), v[id] + val(id + 1, remW - w[id]))
+
+    return max(val(id + 1, remW), v[id] + val(id + 1, remW - w[id]));
+    // (2, 12, ()),100
 }
 
 int main()
 {
-    int max = 0; int idx = 0, tp;
-    //finding LIS for each i and find max LIS id
-    for(int i = 0; i <= 7; i++){
-        tp = LIS(i);
-        if(tp > max){
-            max = tp;
-            idx = i;
-        }
-    }
-    //print LIS
-    for(int i = 0; i <= idx; i++){
-        if(A[i] <= A[idx]) printf("%d ", A[i]);
-    }
+    //v[100, 70, 50, 10] w[10, 4, 6, 12] s = 12
+
+
+    cout<<val(0, 12);
+
+
+
 
     return 0;
 }
