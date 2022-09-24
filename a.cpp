@@ -3,35 +3,39 @@
 */
 #include <bits/stdc++.h>
 using namespace std;
-
-int v[] = {100, 70, 50, 10};
-int w[] = {10, 4, 6, 12};
-int n = 4;
-int val(int id, int remW){
-
-    if(id == n) return 0;
-
-    if(remW == 0) return 0;
-
-    if(w[id] > remW) //if weight is more than remW ignore 
-        return val(id + 1, remW);
-
-    //take or ignore value
-    //val(id, remW) = max(val(id + 1, remW), v[id] + val(id + 1, remW - w[id]))
-
-    return max(val(id + 1, remW), v[id] + val(id + 1, remW - w[id]));
-    // (2, 12, ()),100
-}
-
 int main()
 {
-    //v[100, 70, 50, 10] w[10, 4, 6, 12] s = 12
+    #ifndef ONLINE_JUDGE
+        freopen("input.txt", "r", stdin);
+        freopen("output.txt", "w", stdout);
+    #endif
 
+    int N,M;//5 4
+    scanf("%d %d", &N, &M);
+    int ar[N][M];
+    for(int i = 0; i < N; i++)
+        for(int j = 0; j < M; j++)
+            scanf("%d", &ar[i][j]);
+    int left = 0, right = M - 1, top = 0, bottom = N - 1;
 
-    cout<<val(0, 12); //O(n*S) -> 4 * 12 = 48
-
-
-
+    while(left <= right && top <= bottom){
+        for(int i = left; i <= right; i++){
+            cout<<ar[top][i]<<' ';
+        }
+        top++;
+        for(int i = top; i <= bottom; i++){
+            cout<<ar[i][right]<<' ';
+        }
+        right--;
+        for(int i = right; i >= left; i--){
+            cout<<ar[bottom][i]<<' ';
+        }
+        bottom--;
+        for(int i = bottom; i >= top; i--){
+            cout<<ar[i][left]<<' ';
+        }
+        left++;
+    }
 
     return 0;
 }
