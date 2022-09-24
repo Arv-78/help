@@ -7,15 +7,15 @@ using namespace std;
 
 int V = 10, n = 2, coinValue[] = {1, 5};
 
-int change(int value){   //O(nV)
-    if(value == 0) {return 0;}
-    if(value < 0) return 1000000;
+int ways(int type, int value){   //O(nV)
     
-    int ans = 1000000;
+    if(value == 0) return 1;
+    if(value < 0 || type == n) return 0;
+    //take or ignore
+    int ans = 0;
     for(int i = 0; i < n; i++){
-        ans = min(ans, 1 + change(value - coinValue[i]));
+        ans = ways(type + 1, value) + ways(type, value - coinValue[i]);
     }
-
     return ans;
 }
 
@@ -28,7 +28,7 @@ int main()
     #endif
     //coin change
 
-    cout<<change(10);
+    cout<<ways(0, V);
 
 
     return 0;
