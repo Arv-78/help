@@ -3,39 +3,33 @@
 */
 #include <bits/stdc++.h>
 using namespace std;
+
+
+int V = 10, n = 2, coinValue[] = {1, 5};
+
+int change(int value){   //O(nV)
+    if(value == 0) {return 0;}
+    if(value < 0) return 1000000;
+    
+    int ans = 1000000;
+    for(int i = 0; i < n; i++){
+        ans = min(ans, 1 + change(value - coinValue[i]));
+    }
+
+    return ans;
+}
+
+
 int main()
 {
     #ifndef ONLINE_JUDGE
         freopen("input.txt", "r", stdin);
         freopen("output.txt", "w", stdout);
     #endif
+    //coin change
 
-    int N,M;//5 4
-    scanf("%d %d", &N, &M);
-    int ar[N][M];
-    for(int i = 0; i < N; i++)
-        for(int j = 0; j < M; j++)
-            scanf("%d", &ar[i][j]);
-    int left = 0, right = M - 1, top = 0, bottom = N - 1;
+    cout<<change(10);
 
-    while(left <= right && top <= bottom){
-        for(int i = left; i <= right; i++){
-            cout<<ar[top][i]<<' ';
-        }
-        top++;
-        for(int i = top; i <= bottom; i++){
-            cout<<ar[i][right]<<' ';
-        }
-        right--;
-        for(int i = right; i >= left; i--){
-            cout<<ar[bottom][i]<<' ';
-        }
-        bottom--;
-        for(int i = bottom; i >= top; i--){
-            cout<<ar[i][left]<<' ';
-        }
-        left++;
-    }
 
     return 0;
 }
