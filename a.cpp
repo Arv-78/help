@@ -9,62 +9,58 @@ int main()
         freopen("input.txt", "r", stdin);
         freopen("output.txt", "w", stdout);
     #endif
-
+    
     int N;
     scanf("%d", &N);
-    int line = 0;
+    int matrix[30][30];
+    int ct = 0;
     while(N--){
-        if(line) printf("\n");
-        line++;
-        int a, b, c;
-        scanf("%d", &a);
-        scanf("%d %d", &b, &c);
+        if(ct) printf("\n");
+        ct++;
+        memset(matrix, -999999, sizeof matrix);
+        string s;
+        cin>>s;
+        int n = s.length();
+        
+        //read input
+        for(int j = 0; j < n; j++){
+            for(int i = 0; i < n; i++){
+                if((int)s[i] == 49)matrix[j][i] = 1;
+            }
+            if(j < n - 1) cin>>s;
+        }
+    
+        int max_sum = 0;
 
-        long long int garbage[30][30][30];
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                for(int k = i; k < n; k++){
+                    for(int l = j; l < n; l++){
+                        int ans = 0; int flag = 0;
+                        for(int a = i; a <= k; a++) {
+                            if(flag) break;
+                            for(int b = j; b <= l; b++){
+                                if(matrix[a][b] < 0){
+                                    flag = 1;
+                                    ans = 0;
+                                    break;
+                                }else{
+                                    ans++;
+                                }
 
-        for(int i = 0; i < a; i ++) for(int j = 0; j < b; j++) for(int k = 0; k < c; k++)
-            cin>>garbage[i][j][k];
-
-        long long int opt = (1 << 31); //negative number
-        long long int tmp[30][30];
-        //third dimension
-        for(int i = 0; i < a; i++){//0 
-            //for 1 slice, again 1 + 2 slice, again 2nd individual slice
-            //reset tmp
-            memset(tmp, 0, sizeof tmp);
-            for(int j = i; j < a; j++){ //0-> 0 1
-                //store values in tmp
-                for(int k = 0; k < b; k++)
-                    for(int l = 0; l < c; l++)
-                        tmp[k][l] += garbage[j][k][l];
-                
-                //for inner slices
-                //2d range sum
-                long long int inner_slice[30]; long long int kadane[30];
-               
-                for(int k = 0; k < b; k++){//0 1
-                memset(inner_slice, 0, sizeof inner_slice);
-                    for(int l = k; l < b; l++){//0 -> 0 1
-
-                        for(int m = 0; m < c; m++){
-                            inner_slice[m] += tmp[l][m];
+                            }
                         }
-
-                        //1d sum //check
-                        long long int sum = 0;
-                        for(int d = 0; d < c; d++){
-                            sum += inner_slice[d];
-                            if(sum > opt) opt = sum;
-                            if(sum < 0) sum = 0;
-                        }
-
-                    }
+                        max_sum = max(ans, max_sum);
                 }
             }
         }
-        cout<<opt<<'\n';
-
     }
-    
+
+        
+    cout<< max_sum<<'\n';
+        
+    }
+
+
     return 0;
 }
