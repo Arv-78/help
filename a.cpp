@@ -1,65 +1,63 @@
-/*
-    author: arv
-*/
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
+
 using namespace std;
-int main()
-{
+
+int matrix[1005][1005];
+
+int main(){
+
     #ifndef ONLINE_JUDGE
         freopen("input.txt", "r", stdin);
         freopen("output.txt", "w", stdout);
     #endif
-    
-    int N;
-    scanf("%d", &N);
-    int matrix[30][30];
-    int ct = 0;
-    while(N--){
-        if(ct) printf("\n");
-        ct++;
-        memset(matrix, -999999, sizeof matrix);
-        string s;
-        cin>>s;
-        int n = s.length();
-        
-        //read input
-        for(int j = 0; j < n; j++){
-            for(int i = 0; i < n; i++){
-                if((int)s[i] == 49)matrix[j][i] = 1;
+
+
+    //take the input
+    int N, M;
+    int line = 0;
+    while(scanf("%d %d", &N, &M) == 2){
+        if(line) printf("\n");
+        line++;
+        //fill the matrix with preprocessing cumulative sum matrix
+        for(int i = 0; i < N; i++) 
+            for(int j = 0; j < N; j++){
+                scanf("%d", &matrix[i][j]);
+                if(i > 0) matrix[i][j] += matrix[i - 1][j];
+                if(j > 0) matrix[i][j] += matrix[i][j - 1];
+                if(i > 0 && j > 0) matrix[i][j] -= matrix[i - 1][j - 1];
             }
-            if(j < n - 1) cin>>s;
-        }
-    
-        int max_sum = 0;
 
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j < n; j++){
-                for(int k = i; k < n; k++){
-                    for(int l = j; l < n; l++){
-                        int ans = 0; int flag = 0;
-                        for(int a = i; a <= k; a++) {
-                            if(flag) break;
-                            for(int b = j; b <= l; b++){
-                                if(matrix[a][b] < 0){
-                                    flag = 1;
-                                    ans = 0;
-                                    break;
-                                }else{
-                                    ans++;
-                                }
+        //print [N-M+1][N-M+1] submatrix
+        int whole_sum = 0;
+        for(int i = 0; i < N; i++) //starting indices O(N^2)
+            for(int j = 0; j < N; j++){
+                int k = i + M - 1;//end indices
+                int l = j + M - 1;
+                if(k < N && l < N){
+                    //sum of submatrix
+                    int sum = 0;
 
-                            }
-                        }
-                        max_sum = max(ans, max_sum);
+                    //cal sum using O(1)
+                    sum = matrix[k][l];
+                    if(i > 0)
+                    sum -= matrix[i - 1][l];
+                    if(j > 0)
+                    sum -= matrix[k][j - 1];
+
+                    if(i > 0 && j > 0) sum += matrix[i - 1][j - 1];
+
+                    // for(int a = i; a <= k; a++) 
+                    //     for(int b = j; b <= l; b++){
+                    //         sum += matrix[a][b];
+                    //     }
+                    printf("%d\n", sum);
+                    whole_sum += sum;
                 }
             }
-        }
+        printf("%d\n", whole_sum);
+
     }
 
-        
-    cout<< max_sum<<'\n';
-        
-    }
 
 
     return 0;
