@@ -1,62 +1,50 @@
-#include<bits/stdc++.h>
-
+/*
+    author: arv
+*/
+#include <bits/stdc++.h>
 using namespace std;
-
-int matrix[1005][1005];
-
-int main(){
-
+int main()
+{
     #ifndef ONLINE_JUDGE
         freopen("input.txt", "r", stdin);
         freopen("output.txt", "w", stdout);
     #endif
-
-
-    //take the input
-    int N, M;
-    int line = 0;
-    while(scanf("%d %d", &N, &M) == 2){
-        if(line) printf("\n");
-        line++;
-        //fill the matrix with preprocessing cumulative sum matrix
-        for(int i = 0; i < N; i++) 
+    
+    int M, N;
+    int land[105][105];
+    while(scanf("%d %d", &M, &N) == 2, M != 0, N != 0){
+        for(int i = 0; i < M; i++)
             for(int j = 0; j < N; j++){
-                scanf("%d", &matrix[i][j]);
-                if(i > 0) matrix[i][j] += matrix[i - 1][j];
-                if(j > 0) matrix[i][j] += matrix[i][j - 1];
-                if(i > 0 && j > 0) matrix[i][j] -= matrix[i - 1][j - 1];
+                scanf("%d", &land[i][j]);
             }
-
-        //print [N-M+1][N-M+1] submatrix
-        int whole_sum = 0;
-        for(int i = 0; i < N; i++) //starting indices O(N^2)
-            for(int j = 0; j < N; j++){
-                int k = i + M - 1;//end indices
-                int l = j + M - 1;
-                if(k < N && l < N){
-                    //sum of submatrix
-                    int sum = 0;
-
-                    //cal sum using O(1)
-                    sum = matrix[k][l];
-                    if(i > 0)
-                    sum -= matrix[i - 1][l];
-                    if(j > 0)
-                    sum -= matrix[k][j - 1];
-
-                    if(i > 0 && j > 0) sum += matrix[i - 1][j - 1];
-
-                    // for(int a = i; a <= k; a++) 
-                    //     for(int b = j; b <= l; b++){
-                    //         sum += matrix[a][b];
-                    //     }
-                    printf("%d\n", sum);
-                    whole_sum += sum;
+        
+        int lagrest_land = 0;
+        for(int i = 0; i < M; i++)
+            for(int j = 0; j < N; j++)
+                for(int k = i; k < M; k++){
+                    int flag = 0;
+                    for(int l = j; l < N; l++){
+                        int sum = 0; 
+                        if(flag)break;
+                        for(int a = i; a <= k; a++){
+                            if(flag) break;
+                            for(int b = j; b <= l; b++){
+                                if(land[a][b] == 1) {
+                                    sum = 0;
+                                    flag = 1;
+                                    break;
+                                }
+                                else sum++;
+                            }
+                        }
+                        lagrest_land = max(sum, lagrest_land);
+                    }
                 }
-            }
-        printf("%d\n", whole_sum);
-
+        
+        printf("%d\n", lagrest_land);
+            
     }
+    
 
 
 
