@@ -9,53 +9,56 @@ int main()
         freopen("input.txt", "r", stdin);
         freopen("output.txt", "w", stdout);
     #endif
-    
-    int tc, n, bks;
-    int board[105][105];
+
+    //1. CM 2. for each block price and size 3. if size same then cheaper one, select
+
+    int tc; int t = 0;
     scanf("%d", &tc);
-
-    while(tc--){
-        memset(board, 0, sizeof board);//not working for 1
-        scanf("%d", &n); scanf("%d", &bks);
-        // scanf("%d %d", &n, &bks);
-        // cout<<n<<' '<<bks<<'\n';
-        
+    int N, M, K;
+    int block[105][105];
+    while(tc --){
+        scanf("%d %d %d", &N, &M, &K);
 
 
-        int r1, c1, r2, c2;
-        while(bks --){
-            scanf("%d %d %d %d", &r1, &c1, &r2, &c2);
-            for(int i = r1 - 1; i < r2; i++)
-                for(int j = c1 - 1; j < c2; j++)
-                    board[i][j] = 1;
-        }
-
-        // for(int i = 0; i < n; i++){ for(int j = 0; j < n; j++)
-        // cout<<board[i][j]<<' '; cout<<endl;}
-        
-
-        int large_area = 0; int tmp, length, width;
-        for(int i = 0; i < n; i++){
-            int sum[100];
-            memset(sum, 0, sizeof sum);
-            for(int j = i; j < n; j++){
-                for(int k = 0; k < n; k++){
-                    sum[k] += !board[j][k];
-                    if(k == 0 || tmp != length * width){
-                        tmp = 0; length = 0;
-                    }
-                    length++, width = j - i + 1;
-                    tmp += sum[k];
-                    if(tmp == length * width){
-                        large_area = max(large_area, tmp);
-                    }
-                }
+        //CM
+        for(int i = 0; i < N; i++)
+            for(int j = 0; j < M; j++){
+                scanf("%d", &block[i][j]);
+                if(i > 0) block[i][j] += block[i - 1][j];
+                if(j > 0) block[i][j] += block[i][j - 1];
+                if(i > 0 && j > 0) block[i][j] -= block[i - 1][j - 1];
             }
-        }
+            
+            
+        
+        int max_size = 0; int max_price = 0; int sum, size;
+        for(int i = 0; i < N; i++)
+            for(int j = 0; j < M; j++)
+                for(int k = i; k < N; k++)
+                    for(int l = j; l < M; l++){
+                        sum = block[k][l];
+                        if(i > 0) sum -= block[i - 1][l];
+                        if(j > 0) sum -= block[k][j - 1];
+                        if(i > 0 && j > 0) sum += block[i - 1][j - 1];
+                        
+                        if(sum <= K){
+                            size = (k - i + 1) * (l - j + 1); //k - (i - 1) -> k - i + 1
+                            if(size == max_size && sum < max_price)
+                                max_price = sum;
 
-        printf("%d\n", large_area);
+                            if(size > max_size){
+                                max_price = sum;
+                                max_size = size;
+                            }
+                        }
+                    }
+                
+                
 
-    } 
+            printf("Case #%d: %d %d\n", ++t, max_size, max_price);
+
+    }
+
 
     return 0;
 }
