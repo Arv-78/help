@@ -3,6 +3,25 @@
 */
 #include <bits/stdc++.h>
 using namespace std;
+
+vector <int> heights_incoming;
+int dp[1000001];
+int LIS(int i){
+    
+    if(i == 0) return 1;
+
+    if(dp[i] != -1) return dp[i];
+    int ans = 1; //for each number, itself is a subsequence
+    for(int j = 0; j < i; j++){
+        if(heights_incoming[i] <= heights_incoming[j]){
+            ans = max(ans, LIS(j) + 1);
+        }
+    }
+   return dp[i] = ans;
+}
+
+
+
 int main()
 {
     #ifndef ONLINE_JUDGE
@@ -10,43 +29,23 @@ int main()
         freopen("output.txt", "w", stdout);
     #endif
     
-    //refer - https://saicheems.wordpress.com/2013/11/08/uva-111-history-grading/
+    int h, ct = 0;
+    while(scanf("%d", &h) != EOF){
+        if(h == -1 && heights_incoming.size() > 0) {
+            memset(dp, -1, sizeof dp);
+            int max_sub = 0;
 
-
-    int N, tmp;
-    cin>>N;
-
-    int rank[21];
-    int rank_student[21];
-    int table[50][50];
-
-    memset(table, 0, sizeof table);
-    //reordering events according to rank
-    for(int i = 1; i <= N; i++){
-        cin >> tmp;
-        rank[tmp] = i;
-    }
-
-    while(cin >> tmp){
-        rank_student[tmp] = 1;
-
-        for(int i = 2; i <= N; i++){
-            cin>>tmp;
-            rank_student[tmp] = i;
-        }
-        //longest common subsequence 
-
-        for(int i = 1; i <= N; i++){
-            for(int j = 1; j <= N; j++){
-                if(rank[i] == rank_student[j]) table[i][j] = table[i - 1][j - 1] + 1;
-                else table[i][j] = max(table[i - 1][j], table[i][j - 1]);
+            for(int i = 0; i < heights_incoming.size(); i++){
+                max_sub = max(max_sub, LIS(i));
             }
+            cout<<(ct > 0 ? "\n": "")<<"Test #"<< ++ct <<":\n";
+            cout<<"  maximum possible interceptions: ";
+            cout<<max_sub<<'\n';
+            heights_incoming.clear();
+        } else {
+            heights_incoming.push_back(h);
         }
-
-        cout<<table[N][N]<<endl;
-        
     }
-
 
 
     return 0;
