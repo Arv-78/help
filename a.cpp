@@ -4,46 +4,39 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-vector <int> heights_incoming;
-int dp[1000001];
-int LIS(int i){
-    
-    if(i == 0) return 1;
-
-    if(dp[i] != -1) return dp[i];
-    int ans = 1; //for each number, itself is a subsequence
-    for(int j = 0; j < i; j++){
-        if(heights_incoming[i] <= heights_incoming[j]){
-            ans = max(ans, LIS(j) + 1);
-        }
-    }
-   return dp[i] = ans;
-}
-
-
-
 int main()
 {
     #ifndef ONLINE_JUDGE
         freopen("input.txt", "r", stdin);
         freopen("output.txt", "w", stdout);
     #endif
-    
-    int h, ct = 0;
-    while(scanf("%d", &h) != EOF){
-        if(h == -1 && heights_incoming.size() > 0) {
-            memset(dp, -1, sizeof dp);
-            int max_sub = 0;
 
-            for(int i = 0; i < heights_incoming.size(); i++){
-                max_sub = max(max_sub, LIS(i));
+    vector <int> h;
+    vector <int> l;
+    int tmp, caseI = 0;
+    while(scanf("%d", &tmp) != EOF){
+        if(tmp == -1 && h.size() > 0){
+            //process h
+            int max_interception = 0;
+            for(int i = 0; i < h.size(); i++){
+                for(int j = 0; j < i; j++){
+                    if(h[i] <= h[j]){
+                        l[i] = max(l[i], l[j] + 1);
+                    }
+                }
+                max_interception = max(max_interception, l[i]);
             }
-            cout<<(ct > 0 ? "\n": "")<<"Test #"<< ++ct <<":\n";
-            cout<<"  maximum possible interceptions: ";
-            cout<<max_sub<<'\n';
-            heights_incoming.clear();
+
+             if (caseI)
+                cout << endl;
+                cout << "Test #" << ++caseI << ":" << endl << 
+                "  maximum possible interceptions: " << max_interception << endl;
+
+            h.clear(); l.clear();
+
         } else {
-            heights_incoming.push_back(h);
+            h.push_back(tmp);
+            l.push_back(1);
         }
     }
 
