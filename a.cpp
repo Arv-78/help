@@ -9,55 +9,44 @@ int main()
         freopen("input.txt", "r", stdin);
         freopen("output.txt", "w", stdout);
     #endif
-
-    //1. CM 2. for each block price and size 3. if size same then cheaper one, select
-
-    int tc; int t = 0;
-    scanf("%d", &tc);
-    int N, M, K;
-    int block[105][105];
-    while(tc --){
-        scanf("%d %d %d", &N, &M, &K);
+    
+    //refer - https://saicheems.wordpress.com/2013/11/08/uva-111-history-grading/
 
 
-        //CM
-        for(int i = 0; i < N; i++)
-            for(int j = 0; j < M; j++){
-                scanf("%d", &block[i][j]);
-                if(i > 0) block[i][j] += block[i - 1][j];
-                if(j > 0) block[i][j] += block[i][j - 1];
-                if(i > 0 && j > 0) block[i][j] -= block[i - 1][j - 1];
-            }
-            
-            
-        
-        int max_size = 0; int max_price = 0; int sum, size;
-        for(int i = 0; i < N; i++)
-            for(int j = 0; j < M; j++)
-                for(int k = i; k < N; k++)
-                    for(int l = j; l < M; l++){
-                        sum = block[k][l];
-                        if(i > 0) sum -= block[i - 1][l];
-                        if(j > 0) sum -= block[k][j - 1];
-                        if(i > 0 && j > 0) sum += block[i - 1][j - 1];
-                        
-                        if(sum <= K){
-                            size = (k - i + 1) * (l - j + 1); //k - (i - 1) -> k - i + 1
-                            if(size == max_size && sum < max_price)
-                                max_price = sum;
+    int N, tmp;
+    cin>>N;
 
-                            if(size > max_size){
-                                max_price = sum;
-                                max_size = size;
-                            }
-                        }
-                    }
-                
-                
+    int rank[21];
+    int rank_student[21];
+    int table[50][50];
 
-            printf("Case #%d: %d %d\n", ++t, max_size, max_price);
-
+    memset(table, 0, sizeof table);
+    //reordering events according to rank
+    for(int i = 1; i <= N; i++){
+        cin >> tmp;
+        rank[tmp] = i;
     }
+
+    while(cin >> tmp){
+        rank_student[tmp] = 1;
+
+        for(int i = 2; i <= N; i++){
+            cin>>tmp;
+            rank_student[tmp] = i;
+        }
+        //longest common subsequence 
+
+        for(int i = 1; i <= N; i++){
+            for(int j = 1; j <= N; j++){
+                if(rank[i] == rank_student[j]) table[i][j] = table[i - 1][j - 1] + 1;
+                else table[i][j] = max(table[i - 1][j], table[i][j - 1]);
+            }
+        }
+
+        cout<<table[N][N]<<endl;
+        
+    }
+
 
 
     return 0;
