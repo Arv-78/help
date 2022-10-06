@@ -4,7 +4,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-
+#define MAX_N 100000
 
 int main()
 {
@@ -13,37 +13,43 @@ int main()
         freopen("output.txt", "w", stdout);
     #endif
 
-    vector <int> v;
-    int t;
-    while(scanf("%d", &t) == 1)
-        v.push_back(t);
-
-    vector <int> lis(v.size(), 1);
-    int mx_lis = 0;
-    for(int i = 0; i < v.size(); i++){
-        for(int j = 0; j < i; j++){
-            if(v[i] > v[j]){
-                if(lis[i] < lis[j] + 1)
-                    lis[i] = lis[j] + 1;
-            }
-        }
-        if(lis[i] > mx_lis) mx_lis = lis[i];
-    }
-
-    int seq[mx_lis];
-    int top = mx_lis - 1;
-    int i;
-    for(i = v.size() - 1; i >= 0; i--) if(mx_lis == lis[i]) { seq[top] = v[i]; break;}
+    int v[MAX_N];
     
-    for(int j = i - 1; j >= 0; j--){
-        if(lis[i] - 1 == lis[j] && v[i] > v[j]){
-            seq[--top] = v[j];
-            i = j;
+    int t; int n = -1;
+    while(scanf("%d", &v[++n]) == 1){}
+
+    int L[MAX_N], L_id[MAX_N], P[MAX_N];
+
+    int lis = 0, lis_end = 0;
+    for(int i = 0; i < n; i++){
+        //get position for v[i] for current lis
+        //if(L[k] >= v[i]) pos = k
+        int pos = lower_bound(L, L + lis, v[i]) - L;
+        //for pos update L and index in L_id
+
+        L[pos] = v[i]; 
+        L_id[pos] = i;
+        //take previous i from L_id for pos
+        P[i] = pos? L_id[pos - 1] : -1;
+        //update lis and lis_end
+        if(pos + 1 > lis){
+            lis = pos + 1;
+            lis_end = i;
         }
     }
+    
+    cout<<lis<<'\n'<<'-'<<'\n';
 
-    cout<<mx_lis<<'\n'<<'-'<<'\n';
-    for(int i = 0; i < mx_lis; i++)
-        cout<<seq[i]<<'\n';
+    int x = lis_end;
+    stack <int> s;
+    while(x != -1){
+        s.push(v[x]);
+        x = P[x];
+    }
+
+    while(!s.empty()){
+        cout<<s.top()<<'\n';
+        s.pop();
+    }
     return 0;
 }
