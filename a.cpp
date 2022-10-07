@@ -3,53 +3,64 @@
 */
 #include <bits/stdc++.h>
 using namespace std;
-
-#define MAX_N 100000
-
 int main()
 {
     #ifndef ONLINE_JUDGE
         freopen("input.txt", "r", stdin);
         freopen("output.txt", "w", stdout);
     #endif
-
-    int v[MAX_N];
     
-    int t; int n = -1;
-    while(scanf("%d", &v[++n]) == 1){}
+    int tc;
+    cin>>tc;
+    string s;
+    getline(cin, s); //for line next to int i.e 2[this line space]
+    getline(cin, s); //for gap in between tc and next int
+    
+    int n;
+    while(tc --){
+        vector <int> heights;
+        //push back until s is ""
+        while(getline(cin, s) && s != ""){ heights.push_back(atoi(s.c_str())); }
+        n = heights.size();
+    
+        //finding lis
+        vector <int> lis(n + 10, 1);
+        int mx_lis = 0;
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < i; j++){
+                if(heights[i] > heights[j]){
+                    lis[i] = max(lis[i], lis[j] + 1);
+                }
+            }
 
-    int L[MAX_N], L_id[MAX_N], P[MAX_N];
-
-    int lis = 0, lis_end = 0;
-    for(int i = 0; i < n; i++){
-        //get position for v[i] for current lis
-        //if(L[k] >= v[i]) pos = k
-        int pos = lower_bound(L, L + lis, v[i]) - L;
-        //for pos update L and index in L_id
-
-        L[pos] = v[i]; 
-        L_id[pos] = i;
-        //take previous i from L_id for pos
-        P[i] = pos? L_id[pos - 1] : -1;
-        //update lis and lis_end
-        if(pos + 1 > lis){
-            lis = pos + 1;
-            lis_end = i;
+            mx_lis = max(mx_lis, lis[i]);
         }
-    }
-    
-    cout<<lis<<'\n'<<'-'<<'\n';
 
-    int x = lis_end;
-    stack <int> s;
-    while(x != -1){
-        s.push(v[x]);
-        x = P[x];
+        cout<<"Max hits: "<<mx_lis<<'\n';
+
+
+        //print lis values from heights
+        //1. find lis from bottom and this is idx
+        //2. if mx_lis - 1 == lis[i] and heights of current idx is greater then heights[i]
+        //3. push to stack and update mx_lis and idx
+        stack <int> s;
+        int i; for(i = n - 1; i >= 0; i--) if(mx_lis == lis[i]) {s.push(heights[i]); break;}
+        int idx = i;
+        for(i; i >= 0; i--){
+            if(mx_lis - 1 == lis[i] && heights[idx] > heights[i]){
+                s.push(heights[i]);
+                mx_lis = lis[i];
+                idx = i;
+            }
+        }
+        while(!s.empty()){
+            cout<<s.top()<<'\n';
+            s.pop();
+        }
+
+        if(tc) cout<<'\n';
     }
 
-    while(!s.empty()){
-        cout<<s.top()<<'\n';
-        s.pop();
-    }
+
     return 0;
 }
