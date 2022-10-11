@@ -3,6 +3,13 @@
 */
 #include <bits/stdc++.h>
 using namespace std;
+
+
+//sort array in decreasing order of IQs
+bool compare(pair < int, int > a, pair < int, int > b){
+    return (a.second >= b.second);
+}
+
 int main()
 {
     #ifndef ONLINE_JUDGE
@@ -10,57 +17,48 @@ int main()
         freopen("output.txt", "w", stdout);
     #endif
     
-    int tc;
-    cin>>tc;
-    string s;
-    getline(cin, s); //for line next to int i.e 2[this line space]
-    getline(cin, s); //for gap in between tc and next int
-    
-    int n;
-    while(tc --){
-        vector <int> heights;
-        //push back until s is ""
-        while(getline(cin, s) && s != ""){ heights.push_back(atoi(s.c_str())); }
-        n = heights.size();
-    
-        //finding lis
-        vector <int> lis(n + 10, 1);
-        int mx_lis = 0;
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j < i; j++){
-                if(heights[i] > heights[j]){
-                    lis[i] = max(lis[i], lis[j] + 1);
-                }
-            }
-
-            mx_lis = max(mx_lis, lis[i]);
-        }
-
-        cout<<"Max hits: "<<mx_lis<<'\n';
-
-
-        //print lis values from heights
-        //1. find lis from bottom and this is idx
-        //2. if mx_lis - 1 == lis[i] and heights of current idx is greater then heights[i]
-        //3. push to stack and update mx_lis and idx
-        stack <int> s;
-        int i; for(i = n - 1; i >= 0; i--) if(mx_lis == lis[i]) {s.push(heights[i]); break;}
-        int idx = i;
-        for(i; i >= 0; i--){
-            if(mx_lis - 1 == lis[i] && heights[idx] > heights[i]){
-                s.push(heights[i]);
-                mx_lis = lis[i];
-                idx = i;
-            }
-        }
-        while(!s.empty()){
-            cout<<s.top()<<'\n';
-            s.pop();
-        }
-
-        if(tc) cout<<'\n';
+    vector <pair <int, int>> ele;
+    int wt, iq;
+    while(scanf("%d %d", &wt, &iq) != EOF){
+        ele.push_back({wt, iq});
     }
+    vector <pair <int, int>> ele_sorted(ele);
+    
+    sort(ele_sorted.begin(), ele_sorted.end(), compare);
 
 
+    //finding lis of wts using O(nlogk)
+    int L[10001], L_id[10001], id[10001];
+    int lis = 0, lis_end = 0;
+
+    for(int i = 0; i < ele.size(); i++){
+        int pos = lower_bound(L, L + lis, ele_sorted[i].first) - L;
+        L[pos] = ele_sorted[i].first;
+        L_id[pos] = i;
+        id[i] = pos ? L_id[pos - 1] : -1;
+
+        if(pos + 1 > lis){
+            lis = pos + 1;
+            lis_end = i;
+        }
+    }
+    
+
+    cout<<lis<<'\n';
+    stack <int> idx;
+    //getting indexes of original array
+    int i = lis_end;
+    for(; i != -1; i = id[i]){
+        for(int j = 0; j < ele.size(); j++){
+            if(ele_sorted[i] == ele[j]){
+                idx.push(j + 1);
+                break;
+            }
+        }
+    }
+    while(!idx.empty()){
+        cout<<idx.top()<<'\n';
+        idx.pop();
+    }
     return 0;
 }
