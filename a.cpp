@@ -3,13 +3,6 @@
 */
 #include <bits/stdc++.h>
 using namespace std;
-
-
-//sort array in decreasing order of IQs
-bool compare(pair < int, int > a, pair < int, int > b){
-    return (a.second >= b.second);
-}
-
 int main()
 {
     #ifndef ONLINE_JUDGE
@@ -17,48 +10,51 @@ int main()
         freopen("output.txt", "w", stdout);
     #endif
     
-    vector <pair <int, int>> ele;
-    int wt, iq;
-    while(scanf("%d %d", &wt, &iq) != EOF){
-        ele.push_back({wt, iq});
-    }
-    vector <pair <int, int>> ele_sorted(ele);
-    
-    sort(ele_sorted.begin(), ele_sorted.end(), compare);
+    int tc;
+    int num[100005];
+    while(scanf("%d", &tc) != EOF){
+        memset(num, 0, sizeof num);
+        for(int i = 0; i < tc; i++) 
+            scanf("%d", &num[i]);
 
+        //lis for each element increasing order
 
-    //finding lis of wts using O(nlogk)
-    int L[10001], L_id[10001], id[10001];
-    int lis = 0, lis_end = 0;
+        int lis = 0;
+        int L[100005];
+        int lis_inc[100005];
+        for(int i = 0; i < tc; i++){
+            int pos = lower_bound(L, L + lis, num[i]) - L;
 
-    for(int i = 0; i < ele.size(); i++){
-        int pos = lower_bound(L, L + lis, ele_sorted[i].first) - L;
-        L[pos] = ele_sorted[i].first;
-        L_id[pos] = i;
-        id[i] = pos ? L_id[pos - 1] : -1;
-
-        if(pos + 1 > lis){
-            lis = pos + 1;
-            lis_end = i;
-        }
-    }
-    
-
-    cout<<lis<<'\n';
-    stack <int> idx;
-    //getting indexes of original array
-    int i = lis_end;
-    for(; i != -1; i = id[i]){
-        for(int j = 0; j < ele.size(); j++){
-            if(ele_sorted[i] == ele[j]){
-                idx.push(j + 1);
-                break;
+            L[pos] = num[i];
+            lis_inc[i] = pos + 1;
+            if(lis < pos + 1){
+                lis = pos + 1;
             }
         }
+
+       //lis for decreasing order for each element
+        lis = 0;
+        int lis_dec[100005];
+
+        for(int i = tc - 1; i >= 0; i--){
+            int pos = lower_bound(L, L + lis, num[i]) - L;
+            
+            L[pos] = num[i];
+            lis_dec[i] = pos + 1;
+            if(lis < pos + 1){
+                lis = pos + 1;
+            }
+        }
+
+        //print wavio seq size
+        int ans = 0;
+        for(int i = 0; i < tc; i++){
+            ans = max(ans, min(lis_inc[i], lis_dec[i]) * 2 - 1);
+        }
+
+        cout<<ans<<'\n';
     }
-    while(!idx.empty()){
-        cout<<idx.top()<<'\n';
-        idx.pop();
-    }
+
+
     return 0;
 }
