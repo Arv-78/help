@@ -2,69 +2,27 @@
 using namespace std;
 
 int main(){
-	// int L[20], L_id[20], P[20];
 	
-	// int lis = 0, lis_end = 0;
-	// for(int i = 0; i < 5; i++){
-	// 	int pos = lower_bound(a, a + lis, a[i]) - a;
+	int table[20][20];
 
-	// 	L[pos] = a[i];
-	// 	L_id[pos] = i;
-	// 	P[i] = pos? L_id[pos - 1]: -1;
-	// 	if(pos + 1 > lis){
-	// 		lis = pos + 1;
-	// 		lis_end = i;
-	// 	}
-	// }
-	// //print from lis_end
-	// stack <int> s;
-	// s.push(a[lis_end]);
+	int a[] = {2, 3, 1, 4, 6, 8, 10, 9, 5, 7};
+	int b[] = {3, 1, 4, 6, 8, 10, 9, 5, 7, 2};
+	int N = 10;
+	fill_n(*table, sizeof table / sizeof **table, 0);
 
-	// while(P[lis_end] != -1){
-	// 	s.push(a[P[lis_end]]);
-	// 	lis_end = P[lis_end];
-	// }
+	int i, j;
 
-	// while(!s.empty()){
-	// 	cout<<s.top()<<' ';
-	// 	s.pop();
-	// }
-
-	int a[] = {-5, 2, 3, -4, 4};
-
-	int lis[5];
-	int lis_sz = sizeof(lis)/sizeof(*lis);
-	fill_n(lis, sizeof(lis)/sizeof(*lis), 1);
-
-	int max_lis = 0;
-	for(int i = 0; i < sizeof(a)/sizeof(*a); i++){
-		for(int j = 0; j < i; j++){
-			if(a[i] > a[j] && lis[i] < lis[j] + 1)
-				lis[i] = lis[j] + 1;
-		}
-		if(max_lis < lis[i]) max_lis = lis[i];
-	}
-
-	stack <int> s;
-	int i;
-	for(i = 0; i < lis_sz; i++){
-		if(max_lis == lis[i]){
-			s.push(a[i]);
-			break;
+	for(i = 1; i <= N; i++){
+		for(j = 1; j <= N; j++){
+			if(a[i - 1] == b[j - 1]){
+				table[i][j] = table[i - 1][j - 1] + 1;
+			}else{
+				table[i][j] = max(table[i - 1][j], table[i][j - 1]);
+			}
 		}
 	}
-	max_lis --;
-	for(i - 1; i >= 0; i--){
-		if(max_lis == lis[i] && s.top() > a[i]){
-			s.push(a[i]);
-			max_lis--;
-		}
-	}
-
-	while(!s.empty()){
-		cout<<s.top()<<'\n';
-		s.pop();
-	}
+	//LCS at table[N][N]
+	cout<<table[N][N];
 
 	return 0;
 }
