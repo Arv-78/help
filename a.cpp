@@ -3,58 +3,53 @@
 */
 #include <bits/stdc++.h>
 using namespace std;
+
 int main()
 {
     #ifndef ONLINE_JUDGE
         freopen("input.txt", "r", stdin);
         freopen("output.txt", "w", stdout);
     #endif
-    
     int tc;
-    int num[100005];
-    while(scanf("%d", &tc) != EOF){
-        memset(num, 0, sizeof num);
-        for(int i = 0; i < tc; i++) 
-            scanf("%d", &num[i]);
+    scanf("%d", &tc);
+    while(tc --){
+        int n;
+        scanf("%d", &n);
+        vector < pair<int, int> > v;
 
-        //lis for each element increasing order
-
-        int lis = 0;
-        int L[100005];
-        int lis_inc[100005];
-        for(int i = 0; i < tc; i++){
-            int pos = lower_bound(L, L + lis, num[i]) - L;
-
-            L[pos] = num[i];
-            lis_inc[i] = pos + 1;
-            if(lis < pos + 1){
-                lis = pos + 1;
-            }
+        for(int i = 0; i < n; i++){
+            int w, h;
+            scanf("%d %d", &w, &h);
+            v.push_back({w, h});
         }
 
-       //lis for decreasing order for each element
-        lis = 0;
-        int lis_dec[100005];
+        sort(v.begin(),v.end(),[](pair<int,int>&a,pair<int,int>&b){
+             if(a.first==b.first) return a.second < b.second;
+             return a.first > b.first;
+             });
+        // for(auto i : v){
+        //     cout<<i.first<<' '<<i.second<<'\n';
+        // }
 
-        for(int i = tc - 1; i >= 0; i--){
-            int pos = lower_bound(L, L + lis, num[i]) - L;
-            
-            L[pos] = num[i];
-            lis_dec[i] = pos + 1;
-            if(lis < pos + 1){
-                lis = pos + 1;
-            }
-        }
-
-        //print wavio seq size
+        //if input - 20 30 20 50 40 50 30 40
+        //then after sorting
+        //40 50
+        //30 40
+        //20 30
+        //20 50
+        //find pos for each v[i].second if not found then add it to array and ans++
         int ans = 0;
-        for(int i = 0; i < tc; i++){
-            ans = max(ans, min(lis_inc[i], lis_dec[i]) * 2 - 1);
+        vector <int> remaining_dolls;
+        for(int i = 0; i < n; i++){
+            int pos = upper_bound(remaining_dolls.begin(), remaining_dolls.end(), v[i].second) - remaining_dolls.begin();
+            if(pos == remaining_dolls.size()){
+                ans++;
+                remaining_dolls.push_back(v[i].second);
+            }else{
+                remaining_dolls[pos] = v[i].second;
+            }
         }
-
-        cout<<ans<<'\n';
+        cout<<ans<<"\n";
     }
-
-
     return 0;
 }
