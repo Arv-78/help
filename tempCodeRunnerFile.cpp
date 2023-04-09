@@ -1,3 +1,2 @@
-double, double> d : v){
-//             cout<<d.first<<' '<<d.second<<'\n';
-//         }
+in(); i != final.end(); i++)
+        cout<<*i;
