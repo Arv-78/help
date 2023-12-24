@@ -1,31 +1,23 @@
-/*
-    author: arv
-*/
 #include <bits/stdc++.h>
 using namespace std;
-int main()
-{
+
+typedef tuple<int, int, int> iii;
+
+int main(){
+
     #ifndef ONLINE_JUDGE
-        freopen("input.txt", "r", stdin);
-        freopen("output.txt", "w", stdout);
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
     #endif
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    
-    char str[500];
-    char one[100];
-    int j = 0;
-    while(cin.getline (one, 99, '\n')){ //size -> 99 + null char -> 100 chars
-        int i = 0;
-        if(strstr(one, ".......") == NULL){
-            while(one[i] != '\0'){
-                str[j] = one[i];
-                j++; i++;
-            }
-        }
+
+    vector<iii> birthdays;
+    birthdays.emplace_back(5, 24, -1980);
+    birthdays.emplace_back(5, 24, -1982);
+    birthdays.emplace_back(11, 13, -1983); //82 80 83
+
+    sort(birthdays.begin(), birthdays.end());
+
+    for(auto &[mm, dd, yyyy] : birthdays){
+        printf("%d %d %d\n", dd, mm, -yyyy);
     }
-
-    printf("%s", str);
-
-    return 0;
 }

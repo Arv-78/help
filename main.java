@@ -1,9 +1,13 @@
-import java.math.BigInteger;
 import java.util.*;
 
+/**
+ * Main
+ */
 class main {
-  public static void main(String[] args) throws Exception {
-  BigInteger x = new BigInteger("8"); // Big Integer
-  System.out.println(x.isProbablePrime(0) ? "Prime" : "Composite");
+  public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    double d = sc.nextDouble();
+    System.out.printf("%7.3f\n", d);
+    sc.close();
   }
 }

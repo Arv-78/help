@@ -1,2 +1,3 @@
-in(); i != final.end(); i++)
-        cout<<*i;
+
+ 
+    printf("\nConcatenated String is: '%s'\n", s);

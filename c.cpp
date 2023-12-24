@@ -1,12 +1,16 @@
-#include<bits/stdc++.h>
+/*
+  author: arv
+*/
+#include <bits/stdc++.h>
 using namespace std;
-
-int main(){
-	
-	int j;
-	for(j = 0; j <= 4; j++){}
-	cout<<j;
-
-
-	return 0;
+int main()
+{
+  #ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+  #endif
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  
+  return 0;
 }
