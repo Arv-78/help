@@ -1,3 +1,1 @@
-
- 
-    printf("\nConcatenated String is: '%s'\n", s);
+((n * 2) % 10) + ((n * 2) / 10)

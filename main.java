@@ -1,13 +1,7 @@
-import java.util.*;
-
-/**
- * Main
- */
+import java.math.*; // Java code for task 11
 class main {
-  public static void main(String[] args) {
-    Scanner sc = new Scanner(System.in);
-    double d = sc.nextDouble();
-    System.out.printf("%7.3f\n", d);
-    sc.close();
-  }
+public static void main(String[] args) throws Exception {
+BigInteger x = new BigInteger(""); // Big Integer
+System.out.println(x.isProbablePrime(10) ? "Prime" : "Composite");
+}
 }

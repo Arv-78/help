@@ -1,5 +1,5 @@
-const obj = {id : 45};
 
-const {id : _id} = obj;
+console.log(say);
 
-console.log(_id);
+
+var say = 4;
